@@ -1,4 +1,4 @@
-package ru.pet.proejct.warehousesync.db.dto;
+package ru.pet.project.warehouse_sync.service.dto;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
@@ -14,7 +14,7 @@ import java.math.BigDecimal;
  */
 
 @Data
-public class ItemDto {
+public class InventoryDto {
 
     @NotNull
     @Length(max = 100)

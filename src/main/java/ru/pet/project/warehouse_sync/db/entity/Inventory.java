@@ -1,4 +1,4 @@
-package ru.pet.proejct.warehousesync.db.entity;
+package ru.pet.project.warehouse_sync.db.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -20,7 +20,7 @@ import java.util.UUID;
 @Table(name = "inventory")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Item {
+public class Inventory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -43,8 +43,8 @@ public class Item {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
 
-        Item item = (Item) o;
-        return quantity == item.quantity && Objects.equals(itemId, item.itemId) && Objects.equals(name, item.name) && Objects.equals(description, item.description) && Objects.equals(price, item.price);
+        Inventory inventory = (Inventory) o;
+        return quantity == inventory.quantity && Objects.equals(itemId, inventory.itemId) && Objects.equals(name, inventory.name) && Objects.equals(description, inventory.description) && Objects.equals(price, inventory.price);
     }
 
     @Override

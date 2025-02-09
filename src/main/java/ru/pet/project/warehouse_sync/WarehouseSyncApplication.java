@@ -1,4 +1,4 @@
-package ru.pet.proejct.warehousesync;
+package ru.pet.project.warehouse_sync;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
