@@ -7,6 +7,7 @@ import org.mapstruct.MappingTarget;
 import ru.pet.project.warehouse_sync.db.entity.Inventory;
 import ru.pet.project.warehouse_sync.service.dto.InventoryDto;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 
 /**
@@ -22,10 +23,14 @@ public interface InventoryMapper {
     Collection<InventoryDto> toDtos(Collection<Inventory> inventory);
 
     @Mapping(target = "itemId", source = "id")
+    @Mapping(target = "price", expression = "java(formatPrice(inventoryDto.price()))")
     Inventory toEntity(InventoryDto inventoryDto);
 
     @Mapping(target = "itemId", source = "id")
+    @Mapping(target = "price", expression = "java(formatPrice(inventoryDto.price()))")
     void updateEntity(InventoryDto inventoryDto, @MappingTarget Inventory inventory);
 
-
+    default BigDecimal formatPrice(BigDecimal price) {
+        return price.setScale(2);
+    }
 }
