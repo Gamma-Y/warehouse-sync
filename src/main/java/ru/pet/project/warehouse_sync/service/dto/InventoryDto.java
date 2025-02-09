@@ -7,12 +7,16 @@ import jakarta.validation.constraints.PositiveOrZero;
 import org.hibernate.validator.constraints.Length;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 /**
  * @author Gamma on 06.02.2025
  */
 
 public record InventoryDto(
+        
+        UUID id,
+
         @NotNull
         @Length(max = 100)
         String name,
@@ -28,4 +32,5 @@ public record InventoryDto(
         @Digits(integer = 10, fraction = 2, message = "Price must have up to 10 integer digits and 2 fractional digits")
         BigDecimal price
 ) {
+
 }

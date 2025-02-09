@@ -52,7 +52,8 @@ public class InventoryService {
     }
 
     @Transactional
-    public InventoryDto updateInventory(UUID id, InventoryDto inventoryDto) {
+    public InventoryDto updateInventory(InventoryDto inventoryDto) {
+        UUID id = inventoryDto.id();
         log.info("Updating inventory with id: {}", id);
         Inventory inventory = inventoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Inventory", id));
