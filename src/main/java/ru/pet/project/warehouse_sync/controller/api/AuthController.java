@@ -1,4 +1,4 @@
-package ru.pet.project.warehouse_sync.configuration.security;
+package ru.pet.project.warehouse_sync.controller.api;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.pet.project.warehouse_sync.configuration.security.AuthRequest;
+import ru.pet.project.warehouse_sync.configuration.security.JwtUtil;
 
 /**
  * @author Gamma on 10.02.2025
@@ -27,7 +29,7 @@ public class AuthController {
     }
 
     @PostMapping
-    public String createAuthenticationToken(@RequestBody AuthRequest authRequest) throws Exception {
+    public String createAuthenticationToken(@RequestBody AuthRequest authRequest) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequest.username(), authRequest.password())
         );
