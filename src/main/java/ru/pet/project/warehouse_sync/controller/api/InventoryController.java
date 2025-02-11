@@ -21,7 +21,7 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/inventories")
+@RequestMapping("/api/v1/inventories")
 @Tag(name = "API для управления предметами", description = "API для работы с элементами склада")
 public class InventoryController {
 
