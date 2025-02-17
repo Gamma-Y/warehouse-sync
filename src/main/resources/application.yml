@@ -2,7 +2,7 @@ spring:
   application:
     name: warehouse-sync
   datasource:
-    url: jdbc:postgresql://localhost:5432/warehouse
+    url: jdbc:postgresql://localhost:5432/pet
     username: postgres
     password: test
   flyway:
