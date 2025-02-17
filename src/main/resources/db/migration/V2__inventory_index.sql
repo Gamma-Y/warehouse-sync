@@ -1,1 +1,0 @@
-CREATE INDEX idx_inventory_name ON inventory (name);

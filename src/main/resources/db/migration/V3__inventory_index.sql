@@ -1,0 +1,1 @@
+CREATE INDEX IF NOT EXISTS idx_inventory_name ON warehouse.inventory_item (name);

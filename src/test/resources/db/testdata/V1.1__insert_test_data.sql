@@ -1,4 +1,4 @@
-INSERT INTO inventory (item_id, name, description, quantity, price)
+INSERT INTO warehouse.inventory_item (item_id, name, description, quantity, price)
 VALUES
 ('550e8400-e29b-41d4-a716-446655440000', 'Laptop', 'High-end gaming laptop', 10, 1500.00),
 ('550e8400-e29b-41d4-a716-446655440001', 'Smartphone', 'Latest model with 128GB storage', 25, 800.00),
