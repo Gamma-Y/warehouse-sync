@@ -10,3 +10,6 @@ spring:
     locations: classpath:db/migration
     baseline-on-migrate: true
     placeholder-replacement: false
+topic:
+  notification:
+    low: low-stock
