@@ -10,6 +10,9 @@ spring:
     locations: classpath:db/migration
     baseline-on-migrate: true
     placeholder-replacement: false
+  kafka:
+    bootstrap-servers: localhost:9092
+
 topic:
   notification:
     low: low-stock
