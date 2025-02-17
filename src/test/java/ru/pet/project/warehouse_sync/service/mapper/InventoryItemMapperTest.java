@@ -3,7 +3,7 @@ package ru.pet.project.warehouse_sync.service.mapper;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
-import ru.pet.project.warehouse_sync.db.entity.Inventory;
+import ru.pet.project.warehouse_sync.db.entity.InventoryItem;
 import ru.pet.project.warehouse_sync.service.dto.InventoryDto;
 
 import java.math.BigDecimal;
@@ -12,27 +12,27 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class InventoryMapperTest {
+class InventoryItemMapperTest {
 
     private final InventoryMapper inventoryMapper = Mappers.getMapper(InventoryMapper.class);
 
     @Test
     void toDto() {
-        Inventory inventory = Instancio.of(Inventory.class).create();
-        InventoryDto dto = inventoryMapper.toDto(inventory);
+        InventoryItem inventoryItem = Instancio.of(InventoryItem.class).create();
+        InventoryDto dto = inventoryMapper.toDto(inventoryItem);
 
         assertAll(() -> {
             assertNotNull(dto);
-            assertEquals(inventory.getItemId(), dto.id());
-            assertEquals(inventory.getQuantity(), dto.quantity());
-            assertEquals(inventory.getPrice(), dto.price());
-            assertEquals(inventory.getDescription(), dto.description());
+            assertEquals(inventoryItem.getItemId(), dto.id());
+            assertEquals(inventoryItem.getQuantity(), dto.quantity());
+            assertEquals(inventoryItem.getPrice(), dto.price());
+            assertEquals(inventoryItem.getDescription(), dto.description());
         });
     }
 
     @Test
     void toDtos() {
-        List<Inventory> inventories = Instancio.ofList(Inventory.class).size(5).create();
+        List<InventoryItem> inventories = Instancio.ofList(InventoryItem.class).size(5).create();
         List<InventoryDto> dtos = new ArrayList<>(inventoryMapper.toDtos(inventories));
 
 
@@ -52,7 +52,7 @@ class InventoryMapperTest {
     @Test
     void toEntity() {
         InventoryDto dto = Instancio.of(InventoryDto.class).create();
-        Inventory entity = inventoryMapper.toEntity(dto);
+        InventoryItem entity = inventoryMapper.toEntity(dto);
 
         assertAll(() -> {
             assertNotNull(entity);
@@ -65,17 +65,17 @@ class InventoryMapperTest {
 
     @Test
     void updateEntity() {
-        Inventory inventory = Instancio.of(Inventory.class).create();
+        InventoryItem inventoryItem = Instancio.of(InventoryItem.class).create();
         InventoryDto dto = Instancio.of(InventoryDto.class).create();
 
-        inventoryMapper.updateEntity(dto, inventory);
+        inventoryMapper.updateEntity(dto, inventoryItem);
 
 
         assertAll(() -> {
-            assertEquals(dto.id(), inventory.getItemId());
-            assertEquals(dto.quantity(), inventory.getQuantity());
-            assertEquals(dto.price(), inventory.getPrice());
-            assertEquals(dto.description(), inventory.getDescription());
+            assertEquals(dto.id(), inventoryItem.getItemId());
+            assertEquals(dto.quantity(), inventoryItem.getQuantity());
+            assertEquals(dto.price(), inventoryItem.getPrice());
+            assertEquals(dto.description(), inventoryItem.getDescription());
         });
     }
 

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import ru.pet.project.warehouse_sync.db.entity.Inventory;
+import ru.pet.project.warehouse_sync.db.entity.InventoryItem;
 import ru.pet.project.warehouse_sync.db.repository.InventoryRepository;
 import ru.pet.project.warehouse_sync.exeption.ResourceNotFoundException;
 import ru.pet.project.warehouse_sync.service.dto.InventoryDto;
@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest(classes = {InventoryService.class, InventoryMapper.class})
-class InventoryServiceTest {
+class InventoryItemServiceTest {
 
     @Autowired
     InventoryService inventoryService;
@@ -33,7 +33,7 @@ class InventoryServiceTest {
 
     @Test
     void getInventories() {
-        List<Inventory> inventories = Instancio.ofList(Inventory.class).size(5).create();
+        List<InventoryItem> inventories = Instancio.ofList(InventoryItem.class).size(5).create();
         when(inventoryRepository.findAll()).thenReturn(inventories);
 
         Collection<InventoryDto> actual = inventoryService.getInventories();
@@ -48,7 +48,7 @@ class InventoryServiceTest {
 
     @Test
     void getInventory() {
-        var inventory = Instancio.of(Inventory.class).create();
+        var inventory = Instancio.of(InventoryItem.class).create();
         UUID id = inventory.getItemId();
 
         when(inventoryRepository.findById(id)).thenReturn(Optional.of(inventory));
@@ -65,9 +65,9 @@ class InventoryServiceTest {
     @Test
     void createInventory() {
         var dto = Instancio.of(InventoryDto.class).create();
-        Inventory inventory = inventoryMapper.toEntity(dto);
+        InventoryItem inventoryItem = inventoryMapper.toEntity(dto);
 
-        when(inventoryRepository.save(any(Inventory.class))).thenReturn(inventory);
+        when(inventoryRepository.save(any(InventoryItem.class))).thenReturn(inventoryItem);
 
         var result = inventoryService.createInventory(dto);
         assertAll(() -> {
@@ -79,19 +79,19 @@ class InventoryServiceTest {
             assertEquals(dto.description(), result.description());
         });
 
-        verify(inventoryRepository, times(1)).save(any(Inventory.class));
+        verify(inventoryRepository, times(1)).save(any(InventoryItem.class));
     }
 
     @Test
     void updateInventory() {
         var dto = Instancio.of(InventoryDto.class).create();
         UUID id = dto.id();
-        Inventory existingInventory = new Inventory();
-        existingInventory.setItemId(id);
+        InventoryItem existingInventoryItem = new InventoryItem();
+        existingInventoryItem.setItemId(id);
 
 
-        when(inventoryRepository.findById(id)).thenReturn(Optional.of(existingInventory));
-        when(inventoryRepository.save(any(Inventory.class))).thenReturn(existingInventory);
+        when(inventoryRepository.findById(id)).thenReturn(Optional.of(existingInventoryItem));
+        when(inventoryRepository.save(any(InventoryItem.class))).thenReturn(existingInventoryItem);
 
         var result = inventoryService.updateInventory(dto);
 
@@ -105,15 +105,15 @@ class InventoryServiceTest {
         });
 
         verify(inventoryRepository, times(1)).findById(id);
-        verify(inventoryRepository, times(1)).save(any(Inventory.class));
+        verify(inventoryRepository, times(1)).save(any(InventoryItem.class));
     }
 
     @Test
     void updateInventoryThrowExceptionWhenInventoryNotFound() {
         var dto = Instancio.of(InventoryDto.class).create();
         UUID id = dto.id();
-        Inventory existingInventory = new Inventory();
-        existingInventory.setItemId(id);
+        InventoryItem existingInventoryItem = new InventoryItem();
+        existingInventoryItem.setItemId(id);
 
 
         when(inventoryRepository.findById(id)).thenReturn(Optional.empty());
@@ -121,7 +121,7 @@ class InventoryServiceTest {
         assertThrows(ResourceNotFoundException.class, () -> inventoryService.updateInventory(dto));
 
         verify(inventoryRepository, times(1)).findById(id);
-        verify(inventoryRepository, times(0)).save(any(Inventory.class));
+        verify(inventoryRepository, times(0)).save(any(InventoryItem.class));
     }
 
     @Test

@@ -17,10 +17,10 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "inventory")
+@Table(name = "inventory_item")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Inventory {
+public class InventoryItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -43,8 +43,8 @@ public class Inventory {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
 
-        Inventory inventory = (Inventory) o;
-        return quantity == inventory.quantity && Objects.equals(itemId, inventory.itemId) && Objects.equals(name, inventory.name) && Objects.equals(description, inventory.description) && Objects.equals(price, inventory.price);
+        InventoryItem inventoryItem = (InventoryItem) o;
+        return quantity == inventoryItem.quantity && Objects.equals(itemId, inventoryItem.itemId) && Objects.equals(name, inventoryItem.name) && Objects.equals(description, inventoryItem.description) && Objects.equals(price, inventoryItem.price);
     }
 
     @Override

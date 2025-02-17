@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.pet.project.warehouse_sync.db.entity.Inventory;
+import ru.pet.project.warehouse_sync.db.entity.InventoryItem;
 import ru.pet.project.warehouse_sync.db.repository.InventoryRepository;
 import ru.pet.project.warehouse_sync.exeption.ResourceNotFoundException;
 import ru.pet.project.warehouse_sync.service.dto.InventoryDto;
@@ -30,36 +30,36 @@ public class InventoryService {
     @Transactional(readOnly = true)
     public Collection<InventoryDto> getInventories() {
         log.info("Fetching all inventory");
-        List<Inventory> all = inventoryRepository.findAll();
+        List<InventoryItem> all = inventoryRepository.findAll();
         return inventoryMapper.toDtos(all);
     }
 
     @Transactional(readOnly = true)
     public InventoryDto getInventory(UUID id) {
         log.info("Fetching inventory with id: {}", id);
-        Inventory inventory = inventoryRepository.findById(id)
+        InventoryItem inventoryItem = inventoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Inventory", id));
-        return inventoryMapper.toDto(inventory);
+        return inventoryMapper.toDto(inventoryItem);
 
     }
 
 
     public InventoryDto createInventory(InventoryDto inventoryDto) {
         log.info("Creating inventory: {}", inventoryDto);
-        Inventory inventory = inventoryMapper.toEntity(inventoryDto);
-        inventory = inventoryRepository.save(inventory);
-        return inventoryMapper.toDto(inventory);
+        InventoryItem inventoryItem = inventoryMapper.toEntity(inventoryDto);
+        inventoryItem = inventoryRepository.save(inventoryItem);
+        return inventoryMapper.toDto(inventoryItem);
     }
 
     @Transactional
     public InventoryDto updateInventory(InventoryDto inventoryDto) {
         UUID id = inventoryDto.id();
         log.info("Updating inventory with id: {}", id);
-        Inventory inventory = inventoryRepository.findById(id)
+        InventoryItem inventoryItem = inventoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Inventory", id));
-        inventoryMapper.updateEntity(inventoryDto, inventory);
-        inventory = inventoryRepository.save(inventory);
-        return inventoryMapper.toDto(inventory);
+        inventoryMapper.updateEntity(inventoryDto, inventoryItem);
+        inventoryItem = inventoryRepository.save(inventoryItem);
+        return inventoryMapper.toDto(inventoryItem);
 
     }
 

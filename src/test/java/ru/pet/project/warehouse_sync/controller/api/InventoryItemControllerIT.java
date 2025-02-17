@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(properties = {
         "spring.flyway.locations=classpath:db/migration,classpath:db/testdata"
 })
-class InventoryControllerIT extends PostgresContainerConfig {
+class InventoryItemControllerIT extends PostgresContainerConfig {
     @Autowired
     MockMvc mockMvc;
 

@@ -21,7 +21,7 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/inventories")
+@RequestMapping("/api/inventory")
 @Tag(name = "API для управления предметами", description = "API для работы с элементами склада")
 public class InventoryController {
 
@@ -45,9 +45,9 @@ public class InventoryController {
     @ApiResponse(responseCode = "200", description = "Предмет найден")
     @ApiResponse(responseCode = "404", description = "Предмет не найден")
     @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
-    @GetMapping("/{id}")
-    public ResponseEntity<InventoryDto> getInventoryById(@PathVariable UUID id) {
-        return ResponseEntity.ok(inventoryService.getInventory(id));
+    @GetMapping("/{itemId}")
+    public ResponseEntity<InventoryDto> getInventoryById(@PathVariable UUID itemId) {
+        return ResponseEntity.ok(inventoryService.getInventory(itemId));
     }
 
     @Operation(
@@ -82,9 +82,9 @@ public class InventoryController {
     @ApiResponse(responseCode = "204", description = "Предмет успешно удален")
     @ApiResponse(responseCode = "404", description = "Предмет не найден")
     @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteInventory(@PathVariable UUID id) {
-        inventoryService.deleteInventory(id);
+    @DeleteMapping("/{itemId}")
+    public ResponseEntity<Void> deleteInventory(@PathVariable UUID itemId) {
+        inventoryService.deleteInventory(itemId);
         return ResponseEntity.noContent().build();
     }
 }
