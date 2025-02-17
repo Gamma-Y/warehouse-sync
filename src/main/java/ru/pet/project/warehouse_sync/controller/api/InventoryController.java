@@ -35,7 +35,7 @@ public class InventoryController {
     @ApiResponse(responseCode = "200", description = "Список запасов успешно получен")
     @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
     public ResponseEntity<Collection<InventoryDto>> getAllInventory() {
-        return ResponseEntity.ok(inventoryService.getInventories());
+        return ResponseEntity.ok(inventoryService.getItems());
     }
 
     @Operation(
@@ -47,7 +47,7 @@ public class InventoryController {
     @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
     @GetMapping("/{itemId}")
     public ResponseEntity<InventoryDto> getInventoryById(@PathVariable UUID itemId) {
-        return ResponseEntity.ok(inventoryService.getInventory(itemId));
+        return ResponseEntity.ok(inventoryService.getItem(itemId));
     }
 
     @Operation(
@@ -59,7 +59,7 @@ public class InventoryController {
     @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
     @PostMapping
     public ResponseEntity<InventoryDto> createInventory(@RequestBody @Valid InventoryDto inventoryDto) {
-        return ResponseEntity.ok(inventoryService.createInventory(inventoryDto));
+        return ResponseEntity.ok(inventoryService.createItem(inventoryDto));
     }
 
     @Operation(
@@ -72,7 +72,7 @@ public class InventoryController {
     @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
     @PutMapping
     public ResponseEntity<InventoryDto> updateInventory(@RequestBody @Valid InventoryDto inventoryDto) {
-        return ResponseEntity.ok(inventoryService.updateInventory(inventoryDto));
+        return ResponseEntity.ok(inventoryService.updateItem(inventoryDto));
     }
 
     @Operation(
@@ -84,7 +84,7 @@ public class InventoryController {
     @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
     @DeleteMapping("/{itemId}")
     public ResponseEntity<Void> deleteInventory(@PathVariable UUID itemId) {
-        inventoryService.deleteInventory(itemId);
+        inventoryService.deleteItem(itemId);
         return ResponseEntity.noContent().build();
     }
 }

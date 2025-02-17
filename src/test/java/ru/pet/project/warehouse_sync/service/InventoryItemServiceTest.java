@@ -36,7 +36,7 @@ class InventoryItemServiceTest {
         List<InventoryItem> inventories = Instancio.ofList(InventoryItem.class).size(5).create();
         when(inventoryRepository.findAll()).thenReturn(inventories);
 
-        Collection<InventoryDto> actual = inventoryService.getInventories();
+        Collection<InventoryDto> actual = inventoryService.getItems();
         assertAll(() -> {
             assertNotNull(actual);
             assertEquals(5, inventories.size());
@@ -52,7 +52,7 @@ class InventoryItemServiceTest {
         UUID id = inventory.getItemId();
 
         when(inventoryRepository.findById(id)).thenReturn(Optional.of(inventory));
-        var result = inventoryService.getInventory(id);
+        var result = inventoryService.getItem(id);
 
         assertAll(() -> {
             assertNotNull(result);
@@ -69,7 +69,7 @@ class InventoryItemServiceTest {
 
         when(inventoryRepository.save(any(InventoryItem.class))).thenReturn(inventoryItem);
 
-        var result = inventoryService.createInventory(dto);
+        var result = inventoryService.createItem(dto);
         assertAll(() -> {
             assertNotNull(result);
             assertEquals(dto.id(), result.id());
@@ -93,7 +93,7 @@ class InventoryItemServiceTest {
         when(inventoryRepository.findById(id)).thenReturn(Optional.of(existingInventoryItem));
         when(inventoryRepository.save(any(InventoryItem.class))).thenReturn(existingInventoryItem);
 
-        var result = inventoryService.updateInventory(dto);
+        var result = inventoryService.updateItem(dto);
 
         assertAll(() -> {
             assertNotNull(result);
@@ -118,7 +118,7 @@ class InventoryItemServiceTest {
 
         when(inventoryRepository.findById(id)).thenReturn(Optional.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> inventoryService.updateInventory(dto));
+        assertThrows(ResourceNotFoundException.class, () -> inventoryService.updateItem(dto));
 
         verify(inventoryRepository, times(1)).findById(id);
         verify(inventoryRepository, times(0)).save(any(InventoryItem.class));
@@ -127,7 +127,7 @@ class InventoryItemServiceTest {
     @Test
     void deleteInventory() {
         UUID id = UUID.randomUUID();
-        inventoryService.deleteInventory(id);
+        inventoryService.deleteItem(id);
         verify(inventoryRepository, times(1)).deleteById(id);
     }
 }

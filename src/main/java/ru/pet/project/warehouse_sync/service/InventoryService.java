@@ -2,6 +2,8 @@ package ru.pet.project.warehouse_sync.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.pet.project.warehouse_sync.db.entity.InventoryItem;
@@ -24,18 +26,20 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class InventoryService {
     private final InventoryRepository inventoryRepository;
-
     private final InventoryMapper inventoryMapper;
+    private final KafkaTemplate<String, String> kafkaTemplate;
+    @Value("${topic.notification.low}")
+    private String lowTopicNotification;
 
     @Transactional(readOnly = true)
-    public Collection<InventoryDto> getInventories() {
+    public Collection<InventoryDto> getItems() {
         log.info("Fetching all inventory");
         List<InventoryItem> all = inventoryRepository.findAll();
         return inventoryMapper.toDtos(all);
     }
 
     @Transactional(readOnly = true)
-    public InventoryDto getInventory(UUID id) {
+    public InventoryDto getItem(UUID id) {
         log.info("Fetching inventory with id: {}", id);
         InventoryItem inventoryItem = inventoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Inventory", id));
@@ -44,7 +48,7 @@ public class InventoryService {
     }
 
 
-    public InventoryDto createInventory(InventoryDto inventoryDto) {
+    public InventoryDto createItem(InventoryDto inventoryDto) {
         log.info("Creating inventory: {}", inventoryDto);
         InventoryItem inventoryItem = inventoryMapper.toEntity(inventoryDto);
         inventoryItem = inventoryRepository.save(inventoryItem);
@@ -52,11 +56,17 @@ public class InventoryService {
     }
 
     @Transactional
-    public InventoryDto updateInventory(InventoryDto inventoryDto) {
+    public InventoryDto updateItem(InventoryDto inventoryDto) {
         UUID id = inventoryDto.id();
         log.info("Updating inventory with id: {}", id);
         InventoryItem inventoryItem = inventoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Inventory", id));
+
+        if (inventoryItem.getQuantity() < 10) {
+            kafkaTemplate.send("low-stock", inventoryItem.getItemId().toString());
+        }
+
+
         inventoryMapper.updateEntity(inventoryDto, inventoryItem);
         inventoryItem = inventoryRepository.save(inventoryItem);
         return inventoryMapper.toDto(inventoryItem);
@@ -64,7 +74,7 @@ public class InventoryService {
     }
 
 
-    public void deleteInventory(UUID id) {
+    public void deleteItem(UUID id) {
         log.info("Deleting inventory with id: {}", id);
         if (inventoryRepository.existsById(id)) {
             inventoryRepository.deleteById(id);
